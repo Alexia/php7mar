@@ -1,0 +1,8 @@
+.DS_Store
+.htaccess
+.project
+.svnignore
+.svn
+.idea
+*.sublime-project
+*.sublime-workspace
