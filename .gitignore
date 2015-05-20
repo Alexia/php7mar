@@ -6,3 +6,5 @@
 .idea
 *.sublime-project
 *.sublime-workspace
+/reports/*.txt
+/reports/*.md
