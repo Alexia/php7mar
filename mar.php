@@ -39,7 +39,26 @@ class main {
 
 		$this->reporter = new reporter($this->projectPath, $this->options->getOption('r'));
 
+		$start = microtime(true);
 		$this->scanner = new scanner($this->projectPath);
+
+		$this->run();
+		$end = microtime(true);
+		$runTime = $end - $start;
+		$this->reporter->add("Processing took ".$runTime, 0, 1);
+	}
+
+	/**
+	 * Function Documentation
+	 *
+	 * @access	private
+	 * @return	void
+	 */
+	private function run() {
+		while ($lines = $this->scanner->scanNextFile()) {
+			$files++;
+		}
+		$this->reporter->add("Processed {$files} files.", 0, 1);
 	}
 
 	/**

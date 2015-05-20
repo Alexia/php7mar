@@ -38,6 +38,7 @@ class scanner {
 		}
 		$this->projectPath = $projectPath;
 		$this->recursiveScan($this->projectPath);
+		reset($this->files);
 	}
 
 	/**
@@ -53,7 +54,7 @@ class scanner {
 			if ($content == '.' || $content == '..') {
 				continue;
 			}
-			var_dump($content);
+
 			$path = $startFolder.$content;
 			if (is_dir($path)) {
 				$this->recursiveScan($path.DIRECTORY_SEPARATOR);
@@ -64,6 +65,26 @@ class scanner {
 				$this->files[] = $path;
 			}
 		}
+	}
+
+	/**
+	 * Scan the next file in the array and provide back an array of lines.
+	 *
+	 * @access	public
+	 * @return	mixed	Array of lines from the file or false for no more files.
+	 */
+	public function scanNextFile() {
+		$_file = each($this->files);
+		if ($_file === false) {
+			return false;
+		}
+		$file = $_file['value'];
+
+		$lines = file($file);
+		if ($lines === false) {
+			return false;
+		}
+		return $lines;
 	}
 }
 ?>
