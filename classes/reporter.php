@@ -12,6 +12,13 @@ namespace mar;
 
 class reporter {
 	/**
+	 * Project File or Path
+	 *
+	 * @var		string
+	 */
+	private $projectPath = null;
+
+	/**
 	 * Report folder to save reports
 	 *
 	 * @var		string
@@ -54,23 +61,27 @@ class reporter {
 	 * @param	string	[Optional] Folder to save the report
 	 * @return	void
 	 */
-	public function __construct($project, $reportFolder = null) {
+	public function __construct($projectPath, $reportFolder = null) {
 		$this->startTime = time();
 
-		//A temporary variable needs to be used since realpath() will interpret null as the current path instead.
-		$_reportFolder = realpath($reportFolder);
-		if (!empty($reportFolder) && $_reportFolder !== false) {
-			$this->reportFolder = rtrim($_reportFolder, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+		if (empty($projectPath)) {
+			throw new Exception(__METHOD__.": Project path given was empty.");
+		}
+		$this->projectPath = $projectPath;
+
+		$reportFolder = main::getRealPath($reportFolder);
+		if ($reportFolder !== false) {
+			$this->reportFolder = $reportFolder;
 		} else {
 			$this->reportFolder = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'reports'.DIRECTORY_SEPARATOR;
 		}
-		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($project, '.php').".txt";
+		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($this->projectPath, '.php').".txt";
 
 		$this->file = fopen($this->fullFilePath, 'w+');
 		register_shutdown_function([$this, 'onShutdown']);
 
 		$this->add(date('c', $this->startTime), 0, 1);
-		$this->add("Scanning {$project}", 0, 1);
+		$this->add("Scanning {$this->projectPath}", 0, 1);
 	}
 
 	/**
