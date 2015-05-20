@@ -67,6 +67,7 @@ class reporter {
 		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($project, '.php').".txt";
 
 		$this->file = fopen($this->fullFilePath, 'w+');
+		register_shutdown_function([$this, 'onShutdown']);
 
 		$this->add(date('c', $this->startTime), 0, 1);
 		$this->add("Scanning {$project}", 0, 1);
@@ -97,6 +98,16 @@ class reporter {
 	 */
 	public function getBuffer() {
 		return $this->buffer;
+	}
+
+	/**
+	 * Handle any file clean up on shutdown.
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	public function onShutdown() {
+		fclose($this->file);
 	}
 }
 ?>
