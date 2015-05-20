@@ -22,7 +22,8 @@ class main {
 		spl_autoload_register([self, 'autoloader'], true, false);
 
 		$this->options = new options();
-		var_dump($this->options->getOption('f'));
+
+		$this->reporter = new reporter($this->options->getOption('f'), $this->options->getOption('r'));
 	}
 
 	/**
