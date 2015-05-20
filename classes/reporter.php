@@ -84,7 +84,7 @@ class reporter {
 	 */
 	public function add($line, $nlBefore = 0, $nlAfter = 0) {
 		$output = str_repeat("\n", $nlBefore).$line.str_repeat("\n", $nlAfter);
-		if (fwrite($this->file, $line) === false) {
+		if (fwrite($this->file, $output) === false) {
 			die("There was an error attempting to write to the report file.\n".$this->fullFilePath."\n");
 		}
 	}
