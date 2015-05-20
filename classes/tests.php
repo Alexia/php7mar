@@ -1,5 +1,6 @@
 <?php
 /**
+ * PHP 7 MAR
  * MAR Tests Class
  * Base class for MAR tests including common regular expressions and base logic.
  *
