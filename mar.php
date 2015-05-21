@@ -69,7 +69,7 @@ class main {
 		//Initialize the reporter class.(File output)
 		$this->reporter = new reporter($this->projectPath, $this->options->getOption('r'));
 
-		$this->tests = new tests();
+		$this->tests = new tests($this->options->getOption('t'));
 
 		$start = microtime(true);
 		$this->scanner = new scanner($this->projectPath);

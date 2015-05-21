@@ -13,6 +13,17 @@ namespace mar;
 
 class tests {
 	/**
+	 * Available test types.
+	 *
+	 * @var		array
+	 */
+	private $testTypes = [
+		'critical',
+		'nuances',
+		'syntax'
+	];
+
+	/**
 	 * Common Regular Expressions used in tests.
 	 *
 	 * @var		array
@@ -20,5 +31,20 @@ class tests {
 	private $commonRegex = [
 		'variable'	=> '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
 	];
+
+	/**
+	 * Main Constructor
+	 *
+	 * @access	public
+	 * @param	array	[Optional] Test Types to Run
+	 * @return	void
+	 */
+	public function __construct($testTypes = []) {
+		if (!is_array($testTypes) && !empty($testTypes)) {
+			throw new \Exception(__METHOD__.": Invalid test types variable passed.");
+		} elseif (!empty($testTypes)) {
+			$this->testTypes = array_intersect($testTypes, $this->testTypes);
+		}
+	}
 }
 ?>

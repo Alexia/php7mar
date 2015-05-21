@@ -34,7 +34,7 @@ class scanner {
 	 */
 	public function __construct($projectPath) {
 		if (empty($projectPath)) {
-			throw new Exception(__METHOD__.": Project path given was empty.");
+			throw new \Exception(__METHOD__.": Project path given was empty.");
 		}
 		$this->projectPath = $projectPath;
 		$this->recursiveScan($this->projectPath);

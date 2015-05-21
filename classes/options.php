@@ -70,8 +70,13 @@ class options {
 			'option'		=> self::OPTION_OPTIONAL,
 			'value' 		=> self::VALUE_REQUIRED,
 			'comment'		=> 'Types of tests to run.',
-			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, syntax, nuances.',
-			'example'		=> '-t="syntax,nuances"'
+			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuances, and syntax.',
+			'example'		=> '-t="syntax,nuances"',
+			'allowed'		=> [
+				'critical',
+				'nuances',
+				'syntax'
+			]
 		]
 	];
 
@@ -145,6 +150,15 @@ class options {
 				}
 				if ($validOptions[$option]['value'] === self::VALUE_REQUIRED && !isset($value)) {
 					die("The option `{$option}` requires a value, but none was given.\n");
+				}
+				if (isset($validOptions[$option]['allowed'])) {
+					$value = explode(',', $value);
+					$value = array_map('trim', $value);
+					foreach ($value as $_value) {
+						if (!in_array($_value, $validOptions[$option]['allowed'])) {
+							die("The value `{$_value}` for `{$option}` is not valid.\n");
+						}
+					}
 				}
 				$this->options[$option] = (isset($value) ? $value : true);
 			}

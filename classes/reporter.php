@@ -65,7 +65,7 @@ class reporter {
 		$this->startTime = time();
 
 		if (empty($projectPath)) {
-			throw new Exception(__METHOD__.": Project path given was empty.");
+			throw new \Exception(__METHOD__.": Project path given was empty.");
 		}
 		$this->projectPath = $projectPath;
 
@@ -111,7 +111,7 @@ class reporter {
 	 */
 	public function addToSection($section, $text) {
 		if (empty($section)) {
-			throw new Exception(__METHOD__.": The section can not be empty.");
+			throw new \Exception(__METHOD__.": The section can not be empty.");
 		}
 		$this->sectionBuffers[$section][] = $text;
 	}
