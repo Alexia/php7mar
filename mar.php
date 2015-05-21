@@ -83,19 +83,23 @@ class main {
 	}
 
 	/**
-	 * Function Documentation
+	 * Run tests, generator report sections.
 	 *
 	 * @access	private
 	 * @return	void
 	 */
 	private function run() {
+		$issues = [];
 		while ($lines = $this->scanner->scanNextFile()) {
 			$totalFiles++;
 			foreach ($lines as $index => $line) {
 				$totalLines++;
-				//$result = $this->tests->processLine($line);
+				$_issues = $this->tests->testLine(trim($line));
+				
+				$issues = array_merge($issues, $_issues);
 			}
 		}
+		var_dump($issues);
 		$this->reporter->add("Processed {$totalLines} lines contained in {$totalFiles} files.", 0, 1);
 	}
 
@@ -130,7 +134,7 @@ class main {
 
 		$_path = realpath($path);
 		if (!empty($path) && $_path !== false) {
-			return rtrim($_path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+			return rtrim($_path, DIRECTORY_SEPARATOR);
 		}
 		return false;
 	}

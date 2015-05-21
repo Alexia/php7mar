@@ -49,15 +49,19 @@ class scanner {
 	 * @return	void
 	 */
 	private function recursiveScan($startFolder) {
+		if (is_file($startFolder)) {
+			$this->files[] = $startFolder;
+			return;
+		}
 		$contents = scandir($startFolder);
 		foreach ($contents as $content) {
 			if ($content == '.' || $content == '..') {
 				continue;
 			}
 
-			$path = $startFolder.$content;
+			$path = $startFolder.DIRECTORY_SEPARATOR.$content;
 			if (is_dir($path)) {
-				$this->recursiveScan($path.DIRECTORY_SEPARATOR);
+				$this->recursiveScan($path);
 			} else {
 				if (strpos($content, '.php') === false) {
 					continue;

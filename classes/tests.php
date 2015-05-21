@@ -18,9 +18,9 @@ class tests {
 	 * @var		array
 	 */
 	private $testTypes = [
-		'critical',
-		'nuances',
-		'syntax'
+		'critical'	=> null,
+		'nuances'	=> null,
+		'syntax'	=> null
 	];
 
 	/**
@@ -33,6 +33,13 @@ class tests {
 	];
 
 	/**
+	 * Registered Tests, Callables
+	 *
+	 * @var		array
+	 */
+	private $tests = [];
+
+	/**
 	 * Main Constructor
 	 *
 	 * @access	public
@@ -43,12 +50,61 @@ class tests {
 		if (!is_array($testTypes) && !empty($testTypes)) {
 			throw new \Exception(__METHOD__.": Invalid test types variable passed.");
 		} elseif (!empty($testTypes)) {
-			$this->testTypes = array_intersect($testTypes, $this->testTypes);
+			$testTypes = array_flip($testTypes);
+			$this->testTypes = array_intersect_key($testTypes, $this->testTypes);
 		}
-		foreach ($this->testTypes as $testType) {
-			$className = 'mar\tests\\'.$testType;
-			$this->tests[$testType] = new $className();
+		foreach ($this->testTypes as $testType => $className) {
+			$className = $this->getTestClassName($testType);
+			$this->testTypes[$testType] = new $className();
+			$this->registerTests($testType, $this->testTypes[$testType]->getTests());
 		}
+	}
+
+	/**
+	 * Get the class name for this test type.
+	 *
+	 * @access	public
+	 * @param	string	Test Type
+	 * @return	string	Test Class Name
+	 */
+	public function getTestClassName($testType) {
+		return "mar\\tests\\".$testType;
+	}
+
+	/**
+	 * Register test(s);
+	 *
+	 * @access	public
+	 * @param	string	Test Type
+	 * @param	array	Tests to Register
+	 * @return	void
+	 */
+	public function registerTests($testType, $tests) {
+		foreach ($tests as $test) {
+			$this->tests[] = [
+				'type'		=> $testType,
+				'test'		=> $test,
+				'callable'	=> [$this->testTypes[$testType], '_'.$test]
+			];
+		}
+	}
+
+	/**
+	 * Test the line of code and return issues found.
+	 *
+	 * @access	public
+	 * @param	string	Line of code
+	 * @return	array	Any issues found
+	 */
+	public function testLine($line) {
+		$issues = [];
+		foreach ($this->tests as $info) {
+			$fail = call_user_func($info['callable'], $line);
+			if ($fail) {
+				$issues[$info['type']][$info['test']] = $fail;
+			}
+		}
+		return $issues;
 	}
 }
 ?>
