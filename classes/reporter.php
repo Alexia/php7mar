@@ -75,13 +75,23 @@ class reporter {
 		} else {
 			$this->reportFolder = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'reports'.DIRECTORY_SEPARATOR;
 		}
-		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($this->projectPath, '.php').".txt";
+		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($this->projectPath, '.php').".md";
 
 		$this->file = fopen($this->fullFilePath, 'w+');
 		register_shutdown_function([$this, 'onShutdown']);
 
 		$this->add(date('c', $this->startTime), 0, 1);
 		$this->add("Scanning {$this->projectPath}", 0, 1);
+	}
+
+	/**
+	 * Function Documentation
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	public function setFormat($format) {
+		# code...
 	}
 
 	/**
@@ -106,14 +116,17 @@ class reporter {
 	 *
 	 * @access	public
 	 * @param	string	Section Name
-	 * @param	string	Text to Add
+	 * @param	string	Test Name
+	 * @param	string	File Path
+	 * @param	string	Line Number
+	 * @param	string	Code Line
 	 * @return	void
 	 */
-	public function addToSection($section, $text) {
+	public function addToSection($section, $test, $filePath, $lineNumber, $codeLine) {
 		if (empty($section)) {
 			throw new \Exception(__METHOD__.": The section can not be empty.");
 		}
-		$this->sectionBuffers[$section][] = $text;
+		$this->sectionBuffers[$section][$filePath][$test][] = [$lineNumber, $codeLine];
 	}
 
 	/**
@@ -123,9 +136,18 @@ class reporter {
 	 * @return	void
 	 */
 	public function addSections() {
-		foreach ($this->sectionBuffers as $section => $texts) {
-			$this->add($section, 1, 1);
-			$this->add(implode("\n", $texts), 0 ,1);
+		foreach ($this->sectionBuffers as $section => $filePaths) {
+			$this->add('#'.$section, 1, 1);
+			foreach ($filePaths as $filePath => $tests) {
+				$this->add('####'.$filePath, 0, 1);
+				foreach ($tests as $test => $lines) {
+					$this->add('* '.$test, 0, 1);
+					foreach ($lines as $line) {
+						$this->add(" * Line {$line[0]}: {$line[1]}", 0, 1);
+					}
+				}
+				$this->add('', 1, 0);
+			}
 		}
 	}
 

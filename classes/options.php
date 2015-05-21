@@ -92,6 +92,18 @@ class options {
 			'comment'		=> 'File path to the PHP binary to use for syntax checking.',
 			'description'	=> 'If this option is not used syntax checking will use the default PHP installtion to test syntax.',
 			'example'		=> '--php="/path/to/php/binary/php"'
+		],
+		'format'	=> [
+			'option'		=> self::OPTION_OPTIONAL,
+			'value' 		=> self::VALUE_REQUIRED,
+			'comment'		=> 'Format of the report output.',
+			'description'	=> 'By default the report will be formatted with HTML.  Valid formats are: plain, markdown, html',
+			'example'		=> '--format="markdown"',
+			'allowed'		=> [
+				'plain',
+				'markdown',
+				'html'
+			]
 		]
 	];
 

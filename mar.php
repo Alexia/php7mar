@@ -100,8 +100,7 @@ class main {
 				$issues = $this->tests->testLine($line);
 				foreach ($issues as $section => $tests) {
 					foreach ($tests as $test => $true) {
-						$text = "	`{$test}`\n		{$filePath}\n			Line {$lineNumber}: {$line}";
-						$this->reporter->addToSection($section, $text);
+						$this->reporter->addToSection($section, $test, $filePath, $lineNumber, $line);
 					}
 				}
 				//$issues = array_merge($issues, $_issues);
