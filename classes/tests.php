@@ -45,6 +45,10 @@ class tests {
 		} elseif (!empty($testTypes)) {
 			$this->testTypes = array_intersect($testTypes, $this->testTypes);
 		}
+		foreach ($this->testTypes as $testType) {
+			$className = 'mar\tests\\'.$testType;
+			$this->tests[$testType] = new $className();
+		}
 	}
 }
 ?>

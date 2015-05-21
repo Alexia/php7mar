@@ -106,8 +106,9 @@ class main {
 	 * @param	string	Class name to load automatically.
 	 * @return	void
 	 */
-	static public function autoloader($classname) {
-		$file = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'classes'.str_replace('\\', DIRECTORY_SEPARATOR, str_replace('mar', '', $classname)).'.php';
+	static public function autoloader($className) {
+		$className = str_replace('mar\\', '', $className);
+		$file = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $className).'.php';
 		if (is_file($file)) {
 			require_once($file);
 		} else {
