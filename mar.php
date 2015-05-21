@@ -90,8 +90,8 @@ class main {
 	 */
 	private function run() {
 		$issues = [];
+		$filePath = $this->scanner->getCurrentFilePath();
 		while ($lines = $this->scanner->scanNextFile()) {
-			$filePath = $this->scanner->getCurrentFilePath();
 			$totalFiles++;
 			foreach ($lines as $index => $line) {
 				$lineNumber = $index + 1;
@@ -105,6 +105,7 @@ class main {
 				}
 				//$issues = array_merge($issues, $_issues);
 			}
+			$filePath = $this->scanner->getCurrentFilePath();
 		}
 		//var_dump($issues);
 		$this->reporter->add("Processed {$totalLines} lines contained in {$totalFiles} files.", 0, 1);

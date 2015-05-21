@@ -45,7 +45,7 @@ class critical {
 	 * @return	boolean	Line matches test.
 	 */
 	public function _variableInterpolation($line) {
-		$regex = "#(?:(?:->|\\$)\\$[a-zA-Z_\\x7f-\\xff]{2,}|::\\$[a-zA-Z_\\x7f-\\xff]{2,}\[.+?\]\(.*?\))#i";
+		$regex = "#(?:(?:->|\\$)\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+|::\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+\[.+?\]\(.*?\))#i";
 		if (preg_match($regex, $line)) {
 			return true;
 		}
