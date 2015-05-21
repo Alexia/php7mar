@@ -79,7 +79,7 @@ class main {
 		$runTime = $end - $start;
 		$this->reporter->add("Processing took ".$runTime, 0, 1);
 
-		//$this->reporter->addSections();
+		$this->reporter->addSections();
 	}
 
 	/**
@@ -91,15 +91,23 @@ class main {
 	private function run() {
 		$issues = [];
 		while ($lines = $this->scanner->scanNextFile()) {
+			$filePath = $this->scanner->getCurrentFilePath();
 			$totalFiles++;
 			foreach ($lines as $index => $line) {
+				$lineNumber = $index + 1;
+				$line = trim($line, "\r\n");
 				$totalLines++;
-				$_issues = $this->tests->testLine(trim($line));
-				
-				$issues = array_merge($issues, $_issues);
+				$issues = $this->tests->testLine($line);
+				foreach ($issues as $section => $tests) {
+					foreach ($tests as $test => $true) {
+						$text = "	`{$test}`\n		{$filePath}\n			Line {$lineNumber}: {$line}";
+						$this->reporter->addToSection($section, $text);
+					}
+				}
+				//$issues = array_merge($issues, $_issues);
 			}
 		}
-		var_dump($issues);
+		//var_dump($issues);
 		$this->reporter->add("Processed {$totalLines} lines contained in {$totalFiles} files.", 0, 1);
 	}
 

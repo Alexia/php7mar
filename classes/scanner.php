@@ -90,5 +90,15 @@ class scanner {
 		}
 		return $lines;
 	}
+
+	/**
+	 * Return the file path of the current array pointer.
+	 *
+	 * @access	public
+	 * @return	string	File Path
+	 */
+	public function getCurrentFilePath() {
+		return current($this->files);
+	}
 }
 ?>

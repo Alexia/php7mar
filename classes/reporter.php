@@ -117,6 +117,19 @@ class reporter {
 	}
 
 	/**
+	 * Add sections in the buffer to the output.
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	public function addSections() {
+		foreach ($this->sectionBuffers as $section => $texts) {
+			$this->add($section, 1, 1);
+			$this->add(implode("\n", $texts), 0 ,1);
+		}
+	}
+
+	/**
 	 * Return the current contents of the buffer.
 	 *
 	 * @access	public
