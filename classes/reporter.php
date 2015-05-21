@@ -33,11 +33,11 @@ class reporter {
 	private $fullFilePath = null;
 
 	/**
-	 * Line Buffer
+	 * Line Buffer, contained in keyed sections.
 	 *
 	 * @var		array
 	 */
-	private $buffer = [];
+	private $sectionBuffers = [];
 
 	/**
 	 * Start Time, date('U')
@@ -99,6 +99,21 @@ class reporter {
 		if (fwrite($this->file, $output) === false) {
 			die("There was an error attempting to write to the report file.\n".$this->fullFilePath."\n");
 		}
+	}
+
+	/**
+	 * Add text to the specified section.
+	 *
+	 * @access	public
+	 * @param	string	Section Name
+	 * @param	string	Text to Add
+	 * @return	void
+	 */
+	public function addToSection($section, $text) {
+		if (empty($section)) {
+			throw new Exception(__METHOD__.": The section can not be empty.");
+		}
+		$this->sectionBuffers[$section][] = $text;
 	}
 
 	/**

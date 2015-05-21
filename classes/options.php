@@ -65,6 +65,28 @@ class options {
 			'comment'		=> 'Path to the folder to save the report.',
 			'description'	=> 'The location to save the final report.  By default this saves into the reports/ folder inside the php7mar folder.  A fully qualified path is recommended.  Relative paths will be based off the php7mar folder.',
 			'example'		=> '-r="/path/to/folder"'
+		],
+		't'	=> [
+			'option'		=> self::OPTION_OPTIONAL,
+			'value' 		=> self::VALUE_REQUIRED,
+			'comment'		=> 'Types of tests to run.',
+			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, syntax, nuances.',
+			'example'		=> '-t="syntax,nuances"'
+		]
+	];
+
+	/**
+	 * Long(Two dashes, multiple letter) Options
+	 *
+	 * @var		array
+	 */
+	private $validLongOptions = [
+		'php'	=> [
+			'option'		=> self::OPTION_OPTIONAL,
+			'value' 		=> self::VALUE_REQUIRED,
+			'comment'		=> 'File path to the PHP binary to use for syntax checking.',
+			'description'	=> 'If this option is not used syntax checking will use the default PHP installtion to test syntax.',
+			'example'		=> '--php="/path/to/php/binary/php"'
 		]
 	];
 

@@ -19,6 +19,34 @@ class main {
 	private $projectPath = null;
 
 	/**
+	 * Options class
+	 *
+	 * @var		object
+	 */
+	private $options = null;
+
+	/**
+	 * Reporter class
+	 *
+	 * @var		object
+	 */
+	private $reporter = null;
+
+	/**
+	 * Tests class
+	 *
+	 * @var		object
+	 */
+	private $tests = null;
+
+	/**
+	 * Scanner class
+	 *
+	 * @var		object
+	 */
+	private $scanner = null;
+
+	/**
 	 * Main Constructor
 	 *
 	 * @access	public
@@ -28,6 +56,7 @@ class main {
 		define('PHP7MAR_DIR', __DIR__);
 		spl_autoload_register([self, 'autoloader'], true, false);
 
+		//Setup command line options/switches.
 		$this->options = new options();
 
 		$projectPath = self::getRealPath($this->options->getOption('f'));
@@ -37,7 +66,10 @@ class main {
 			die("The project path given could not be found.\n");
 		}
 
+		//Initialize the reporter class.(File output)
 		$this->reporter = new reporter($this->projectPath, $this->options->getOption('r'));
+
+		$this->tests = new tests();
 
 		$start = microtime(true);
 		$this->scanner = new scanner($this->projectPath);
@@ -46,6 +78,8 @@ class main {
 		$end = microtime(true);
 		$runTime = $end - $start;
 		$this->reporter->add("Processing took ".$runTime, 0, 1);
+
+		//$this->reporter->addSections();
 	}
 
 	/**
@@ -56,9 +90,13 @@ class main {
 	 */
 	private function run() {
 		while ($lines = $this->scanner->scanNextFile()) {
-			$files++;
+			$totalFiles++;
+			foreach ($lines as $index => $line) {
+				$totalLines++;
+				//$result = $this->tests->processLine($line);
+			}
 		}
-		$this->reporter->add("Processed {$files} files.", 0, 1);
+		$this->reporter->add("Processed {$totalLines} lines contained in {$totalFiles} files.", 0, 1);
 	}
 
 	/**

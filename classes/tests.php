@@ -9,9 +9,16 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
+namespace mar;
+
 class tests {
-	$commonRegex = [
-		'variable'	=> '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*';
+	/**
+	 * Common Regular Expressions used in tests.
+	 *
+	 * @var		array
+	 */
+	private $commonRegex = [
+		'variable'	=> '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
 	];
 }
 ?>
