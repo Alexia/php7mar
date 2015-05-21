@@ -79,7 +79,7 @@ class nuances {
 	 * @return	boolean	Line matches test.
 	 */
 	public function _emptyListAssignment($line) {
-		$regex = "#(?:list\(\s*?\)|list\([,|\s]+?\)|list\(.*?list\([,|\s]*?\).*?\))#";
+		$regex = "#(?:^\s*?list\(\s*?\)|list\([,|\s]+?\)|list\(.*?list\([,|\s]*?\).*?\))#";
 		if (preg_match($regex, $line)) {
 			return true;
 		}
