@@ -66,4 +66,4 @@ Critical tests look for issues that will cause broken code, compilation errors, 
 Nuance tests look for issues that might cause silent underisable code behavior.  These tests can report many false positives as they can not determine the intent of the code being checked.
 
 ##Syntax
-A basica syntax checker that tests all files for standard syntax issues.  This is useful for double checking work after making many mass find and replace operations.  Please note that syntax checking adds a significant increase to processing time especially for large code bases.  To run without syntax checking use the -t option and omit syntax; -t="critical,nuances"
+A basic command line based syntax checker that checks all files for standard syntax issues.  This is useful for double checking work after making many mass find and replace operations.  Please note that syntax checking adds a significant increase to processing time especially for large code bases.  To run without syntax checking use the -t option and omit syntax; -t="critical,nuances"
