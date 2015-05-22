@@ -28,7 +28,8 @@ class nuances {
 		'arrayValueByReference',
 		'listUnpackString',
 		'emptyListAssignment',
-		'foreachByReference'
+		'foreachByReference',
+		'funcGetArg'
 	];
 
 	/**
@@ -94,7 +95,7 @@ class nuances {
 	 * @return	boolean	Line matches test.
 	 */
 	public function _listUnpackString($line) {
-		$regex = "#list\(.*?\)\s+?=\s+?['|\"].*?['|\"]#i";
+		$regex = "#^\s*?list\(.*?\)\s+?=\s+?['|\"].*?['|\"]#i";
 		if (preg_match($regex, $line)) {
 			return true;
 		}
@@ -110,6 +111,21 @@ class nuances {
 	 */
 	public function _foreachByReference($line) {
 		$regex = "#foreach\s+?\(\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+\s+?as\s+.*?&\\$.*?\)#i";
+		if (preg_match($regex, $line)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Using func_get_arg()/func_get_args() after modifying a parameter passed to a function will now return the modified value.
+	 *
+	 * @access	public
+	 * @param	string	Line to test against.
+	 * @return	boolean	Line matches test.
+	 */
+	public function _funcGetArg($line) {
+		$regex = "#func_get_args?\(#";
 		if (preg_match($regex, $line)) {
 			return true;
 		}
