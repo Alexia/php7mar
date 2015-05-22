@@ -25,7 +25,8 @@ class critical {
 	 */
 	private $tests = [
 		'variableInterpolation',
-		'duplicateFunctionParameter'
+		'duplicateFunctionParameter',
+		'reservedNames'
 	];
 
 	/**
@@ -81,6 +82,21 @@ class critical {
 			if ($totalArguments != $uniqueArguments) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	/**
+	 * New class names that are reserved for internal PHP classes.
+	 *
+	 * @access	public
+	 * @param	string	Line to test against.
+	 * @return	boolean	Line matches test.
+	 */
+	public function _reservedNames($line) {
+		$regex = "#(class|interface|trait)\s+?(?:bool|int|float|string|null|false|true|resource|object|mixed|numeric)(?:$|\s|{)#i";
+		if (preg_match($regex, $line)) {
+			return true;
 		}
 		return false;
 	}
