@@ -15,4 +15,9 @@ foreach ($array as getThing() => &$val) { /*...*/ }
 function foo($a, $b, $unused, $unused) { /*...*/ }
 static function renderArrayMap(&$parser, $value = '', $delimiter = ',', $var = 'x', $formula = 'x', $new_delimiter = ', ') { /*...*/ }
 var_dump(func_get_args(0));
+"0x123";
+"0x123fea";
+"\u{00f0}";
+"\u{xyz}";
+"\\u{xyz}";
 ?>

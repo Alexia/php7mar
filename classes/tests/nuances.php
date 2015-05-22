@@ -29,7 +29,9 @@ class nuances {
 		'listUnpackString',
 		'emptyListAssignment',
 		'foreachByReference',
-		'funcGetArg'
+		'funcGetArg',
+		'hexadecimalString',
+		'unicode'
 	];
 
 	/**
@@ -126,6 +128,36 @@ class nuances {
 	 */
 	public function _funcGetArg($line) {
 		$regex = "#func_get_args?\(#";
+		if (preg_match($regex, $line)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Hexadecimals in strings are no longer treated as integers.
+	 *
+	 * @access	public
+	 * @param	string	Line to test against.
+	 * @return	boolean	Line matches test.
+	 */
+	public function _hexadecimalString($line) {
+		$regex = "#['|\"]0x[a-fA-F0-9]+?['|\"]#";
+		if (preg_match($regex, $line)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Make sure none of the code is using the new unicode format(\u{xxxxxx}) accidentally.
+	 *
+	 * @access	public
+	 * @param	string	Line to test against.
+	 * @return	boolean	Line matches test.
+	 */
+	public function _unicode($line) {
+		$regex = "#(?:(?:[^\\\]|^)\\\)u{.*?[^a-fA-F0-9].*?}#";
 		if (preg_match($regex, $line)) {
 			return true;
 		}
