@@ -1,17 +1,17 @@
 {
 	"name": "alexia/php7mar",
-    "type": "project",
+	"type": "project",
 	"description": "PHP 7 MAR, or just \"php7mar\", is a command line utility to generate reports on existing PHP 5 code to assist developers in porting their code quickly to PHP 7.",
-    "keywords": ["php7", "php5", "migration", "porting"],
-    "homepage": "https://github.com/Alexia/php7mar",
-    "license": "GPL-3.0",
-    "authors": [
-        {
-            "name": "Alexia E. Smith",
-            "email": "washuu@gmail.com",
-            "role": "Developer"
-        }
-    ],
+	"keywords": ["php7", "php5", "migration", "porting"],
+	"homepage": "https://github.com/Alexia/php7mar",
+	"license": "GPL-3.0",
+	"authors": [
+		{
+			"name": "Alexia E. Smith",
+			"email": "washuu@gmail.com",
+			"role": "Developer"
+		}
+	],
 	"require": {
 		"php": ">=5.4.0"
 	}
