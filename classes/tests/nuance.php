@@ -1,7 +1,7 @@
 <?php
 /**
  * PHP 7 MAR
- * MAR Nuances Tests Class
+ * MAR Nuance Tests Class
  *
  * @author     Alexia E. Smith <washuu@gmail.com>
  * @copyright  2015 Alexia E. Smith
@@ -10,13 +10,13 @@
 
 namespace mar\tests;
 
-class nuances {
+class nuance {
 	/**
 	 * What test type this is, should be the same as the class name.
 	 *
 	 * @var		string
 	 */
-	private $testType = 'nuances';
+	private $testType = 'nuance';
 
 	/**
 	 * Tests to be registered.

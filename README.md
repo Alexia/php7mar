@@ -51,8 +51,8 @@ Give a try, use the included `testcases.php` to generate a report:
 **-t**
 ```
 	Types of tests to run.
-	By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuances, and syntax.
-		*Example: -t="syntax,nuances"*
+	By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuance, and syntax.
+		*Example: -t="syntax,nuance"*
 ```
 
 **--php**
@@ -66,8 +66,8 @@ Give a try, use the included `testcases.php` to generate a report:
 ##Critical
 Critical tests look for issues that will cause broken code, compilation errors, or otherwise create code that works in unintended manors.
 
-##Nuances
+##Nuance
 Nuance tests look for issues that might cause silent underisable code behavior.  These tests can report many false positives as they can not determine the intent of the code being checked.
 
 ##Syntax
-A basic command line based syntax checker that checks all files for standard syntax issues.  This is useful for double checking work after making many mass find and replace operations.  Please note that syntax checking adds a significant increase to processing time especially for large code bases.  To run without syntax checking use the -t option and omit syntax; -t="critical,nuances"
+A basic command line based syntax checker that checks all files for standard syntax issues.  This is useful for double checking work after making many mass find and replace operations.  Please note that syntax checking adds a significant increase to processing time especially for large code bases.  To run without syntax checking use the -t option and omit syntax; -t="critical,nuance"

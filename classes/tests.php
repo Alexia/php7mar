@@ -19,7 +19,7 @@ class tests {
 	 */
 	private $testTypes = [
 		'critical'	=> null,
-		'nuances'	=> null
+		'nuance'	=> null
 	];
 
 	/**

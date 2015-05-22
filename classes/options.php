@@ -70,11 +70,11 @@ class options {
 			'option'		=> self::OPTION_OPTIONAL,
 			'value' 		=> self::VALUE_REQUIRED,
 			'comment'		=> 'Types of tests to run.',
-			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuances, and syntax.',
-			'example'		=> '-t="syntax,nuances"',
+			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuance, and syntax.',
+			'example'		=> '-t="syntax,nuance"',
 			'allowed'		=> [
 				'critical',
-				'nuances',
+				'nuance',
 				'syntax'
 			]
 		]
