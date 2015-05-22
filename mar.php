@@ -72,13 +72,17 @@ class main {
 
 		$this->tests = new tests($this->options->getOption('t'));
 
+		if (!empty($this->options->getOption('php'))) {
+			$this->tests->setPHPBinaryPath($this->options->getOption('php'));
+		}
+
 		$start = microtime(true);
 		$this->scanner = new scanner($this->projectPath);
 
 		$this->run();
 		$end = microtime(true);
 		$runTime = $end - $start;
-		$this->reporter->add("Processing took ".$runTime, 0, 1);
+		$this->reporter->add("Processing took {$runTime} seconds.", 0, 1);
 
 		$this->reporter->addSections();
 	}
@@ -92,11 +96,33 @@ class main {
 	private function run() {
 		$issues = [];
 		$filePath = $this->scanner->getCurrentFilePath();
+		if (!$this->options->getOption('t') || in_array('syntax', $this->options->getOption('t'))) {
+			$checkSyntax = true;
+		} else {
+			$checkSyntax = false;
+		}
+
 		while ($lines = $this->scanner->scanNextFile()) {
 			$totalFiles++;
+
+			//Check syntax and assign a line to grab if needed.
+			$grabLineNumber = null;
+			$grabLine = null;
+			if ($checkSyntax) {
+				$syntax = $this->tests->checkSyntax($filePath);
+				if (!isset($syntax['is_valid'])) {
+					$grabLineNumber = $syntax['line'];
+				}
+			}
+
 			foreach ($lines as $index => $line) {
 				$lineNumber = $index + 1;
 				$line = trim($line, "\r\n");
+
+				if ($lineNumber == $grabLineNumber) {
+					$grabLine = $line;
+				}
+
 				$totalLines++;
 				$issues = $this->tests->testLine($line);
 				foreach ($issues as $section => $tests) {
@@ -104,11 +130,13 @@ class main {
 						$this->reporter->addToSection($section, $test, $filePath, $lineNumber, $line);
 					}
 				}
-				//$issues = array_merge($issues, $_issues);
+			}
+
+			if ($checkSyntax && $grabLine !== null) {
+				$this->reporter->addToSection('syntax', 'syntax', $filePath, $grabLineNumber, $grabLine.' //'.$syntax['error']);
 			}
 			$filePath = $this->scanner->getCurrentFilePath();
 		}
-		//var_dump($issues);
 		$this->reporter->add("Processed {$totalLines} lines contained in {$totalFiles} files.", 0, 1);
 	}
 

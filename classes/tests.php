@@ -19,8 +19,7 @@ class tests {
 	 */
 	private $testTypes = [
 		'critical'	=> null,
-		'nuances'	=> null,
-		'syntax'	=> null
+		'nuances'	=> null
 	];
 
 	/**
@@ -38,6 +37,13 @@ class tests {
 	 * @var		array
 	 */
 	private $tests = [];
+
+	/**
+	 * PHP Binary Path
+	 *
+	 * @var		string
+	 */
+	private $php = null;
 
 	/**
 	 * Main Constructor
@@ -105,6 +111,54 @@ class tests {
 			}
 		}
 		return $issues;
+	}
+
+	/**
+	 * Set the location of the PHP binary.
+	 *
+	 * @access	public
+	 * @param	string	File Path
+	 * @return	void
+	 */
+	public function setPHPBinaryPath($path) {
+		$this->php = $path;
+	}
+
+	/**
+	 * Check if syntax is valid and return line information if not.
+	 *
+	 * @access	public
+	 * @param	string	File Path
+	 * @return	array	Test Results
+	 */
+	public function checkSyntax($filePath) {
+		$binary = 'php';
+		if ($this->php !== null) {
+			$binary = $this->php;
+		}
+		exec($binary.' -l '.$filePath.' 2>&1', $output);
+
+		$errorMsgLine = ' in '.$filePath;
+		if (count($output)) {
+			foreach ($output as $string) {
+				if (empty($string)) {
+					continue;
+				}
+
+				if (strpos($string, 'error') !== false) {
+					$syntax['error'] = str_replace($errorMsgLine, '', $string);
+					if (preg_match('#line (?P<line>\d*)#is', $syntax['error'], $matches)) {
+						$syntax['line'] = intval($matches['line']);
+					}
+				}
+
+				if (strpos($string, 'No syntax errors detected') !== false) {
+					$syntax['is_valid'] = true;
+					break;
+				}
+			}
+		}
+		return $syntax;
 	}
 }
 ?>

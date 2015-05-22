@@ -63,7 +63,7 @@ class scanner {
 			if (is_dir($path)) {
 				$this->recursiveScan($path);
 			} else {
-				if (strpos($content, '.php') === false) {
+				if (substr($content, -4) == '.php') {
 					continue;
 				}
 				$this->files[] = $path;
