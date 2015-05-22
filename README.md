@@ -26,6 +26,27 @@ Or:
 
 This would run against the example file or folder and save the resulting report into a reports folder inside the php7mar folder.  When referencing the file or folder to run against it is recommend to use a fully qualified path.  Relative paths are supported, but will be relative to the location of the php7mar folder.
 
+##Available Options:
+**-f**
+	Path to the file or folder to run against.
+	The location of the file or folder to use for generating the report.  A fully qualified path is recommended.  Relative paths will be based off the php7mar folder.
+		*Example: -f="/path/to/folder"*
+
+**-r**
+	Path to the folder to save the report.
+	The location to save the final report.  By default this saves into the reports/ folder inside the php7mar folder.  A fully qualified path is recommended.  Relative paths will be based off the php7mar folder.
+		*Example: -r="/path/to/folder"*
+
+**-t**
+	Types of tests to run.
+	By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuances, and syntax.
+		*Example: -t="syntax,nuances"*
+
+**--php**
+	File path to the PHP binary to use for syntax checking.
+	If this option is not used syntax checking will use the default PHP installtion to test syntax.
+		*Example: --php="/path/to/php/binary/php"*
+
 #Test Types
 ##Critical
 Critical tests look for issues that will cause broken code, compilation errors, or otherwise create code that works in unintended manors.
