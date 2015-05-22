@@ -55,7 +55,7 @@ class scanner {
 		}
 		$contents = scandir($startFolder);
 		foreach ($contents as $content) {
-			if ($content == '.' || $content == '..') {
+			if (strpos($content, '.') === 0) {
 				continue;
 			}
 
@@ -63,7 +63,7 @@ class scanner {
 			if (is_dir($path)) {
 				$this->recursiveScan($path);
 			} else {
-				if (substr($content, -4) == '.php') {
+				if (substr($content, -4) != '.php') {
 					continue;
 				}
 				$this->files[] = $path;
