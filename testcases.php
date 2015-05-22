@@ -33,6 +33,7 @@ class resource { /*...*/ }
 class object { /*...*/ }
 class mixed { /*...*/ }
 class numeric { /*...*/ }
+//@param $class string the class name
 
 interface bool { /*...*/ }
 interface int { /*...*/ }
@@ -62,4 +63,14 @@ trait resource { /*...*/ }
 trait object { /*...*/ }
 trait mixed { /*...*/ }
 trait numeric { /*...*/ }
+
+//Deprecated and Removed Functions
+mcrypt_generic_end();
+mcrypt_ecb();
+mcrypt_cbc();
+mcrypt_cfb();
+mcrypt_ofb();
+set_magic_quotes_runtime();
+magic_quotes_runtime();
+set_socket_blocking();
 ?>

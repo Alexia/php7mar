@@ -54,6 +54,7 @@ class main {
 	 */
 	public function __construct() {
 		define('PHP7MAR_DIR', __DIR__);
+		define('PHP7MAR_VERSION', '0.0.1');
 		spl_autoload_register([self, 'autoloader'], true, false);
 
 		//Setup command line options/switches.
