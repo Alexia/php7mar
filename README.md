@@ -29,6 +29,10 @@ Or:
 
 This would run against the example file or folder and save the resulting report into a reports folder inside the php7mar folder.  When referencing the file or folder to run against it is recommend to use a fully qualified path.  Relative paths are supported, but will be relative to the location of the php7mar folder.
 
+Give a try, use the included `testcases.php` to generate a report:
+
+	php mar.php -f="testcases.php"
+
 ##Available Options:
 **-f**
 ```

@@ -85,6 +85,8 @@ class main {
 		$this->reporter->add("Processing took {$runTime} seconds.", 0, 1);
 
 		$this->reporter->addSections();
+
+		echo "Report located at: ".$this->reporter->getReportFilePath()."\n";
 	}
 
 	/**

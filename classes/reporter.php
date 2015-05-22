@@ -152,13 +152,13 @@ class reporter {
 	}
 
 	/**
-	 * Return the current contents of the buffer.
+	 * Return the file path of the report.
 	 *
 	 * @access	public
-	 * @return	array	Array of lines
+	 * @return	string	File Path
 	 */
-	public function getBuffer() {
-		return $this->buffer;
+	public function getReportFilePath() {
+		return $this->fullFilePath;
 	}
 
 	/**
