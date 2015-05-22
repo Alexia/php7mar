@@ -95,7 +95,7 @@ class critical {
 	 * @return	boolean	Line matches test.
 	 */
 	public function _reservedNames($line) {
-		$regex = "#(?:^|\s)(class|interface|trait)\s+?(?:bool|int|float|string|null|false|true|resource|object|mixed|numeric)(?:$|\s|{)#i";
+		$regex = "#^\s*?(class|interface|trait)\s+?(?:bool|int|float|string|null|false|true|resource|object|mixed|numeric)(?:$|\s|{)#i";
 		if (preg_match($regex, $line)) {
 			return true;
 		}

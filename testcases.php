@@ -22,6 +22,7 @@ var_dump(func_get_args(0));
 "\\u{xyz}";
 
 //Reserved Class/Interface/Trait Names
+} class bool { /*...*/ } //Should not get caught, along with this: class object
 class bool { /*...*/ }
 class int { /*...*/ }
 class float { /*...*/ }
