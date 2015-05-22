@@ -24,7 +24,8 @@ class critical {
 	 * @var		array
 	 */
 	private $tests = [
-		'variableInterpolation'
+		'variableInterpolation',
+		'duplicateFunctionParameter'
 	];
 
 	/**
@@ -48,6 +49,38 @@ class critical {
 		$regex = "#(?:(?:->|\\$)\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+|::\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+\[.+?\]\(.*?\))#i";
 		if (preg_match($regex, $line)) {
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Functions can no longer define parameters with the same name more than once.
+	 *
+	 * @access	public
+	 * @param	string	Line to test against.
+	 * @return	boolean	Line matches test.
+	 */
+	public function _duplicateFunctionParameter($line) {
+		$regex = "#function [a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+\((.*?)(?:\)(?!(?:\s*?,|\s*?\\$)))#i";
+		if (preg_match($regex, $line, $matches)) {
+			//Abuse the lexer to get variables out.
+			$tokens = token_get_all("<?php ".$matches[1]."?>");
+			$variables = [];
+			foreach ($tokens as $token) {
+				if (!is_array($token)) {
+					continue;
+				}
+				if ($token[0] == T_VARIABLE) {
+					$variables[] = $token[1];
+				}
+			}
+
+			$totalArguments = count($variables);
+			$variables = array_unique($variables);
+			$uniqueArguments = count($variables);
+			if ($totalArguments != $uniqueArguments) {
+				return true;
+			}
 		}
 		return false;
 	}
