@@ -93,7 +93,7 @@ class options {
 			'description'	=> 'If this option is not used syntax checking will use the default PHP installtion to test syntax.',
 			'example'		=> '--php="/path/to/php/binary/php"'
 		],
-		'format'	=> [
+		/*'format'	=> [
 			'option'		=> self::OPTION_OPTIONAL,
 			'value' 		=> self::VALUE_REQUIRED,
 			'comment'		=> 'Format of the report output.',
@@ -104,7 +104,7 @@ class options {
 				'markdown',
 				'html'
 			]
-		]
+		]*/
 	];
 
 	/**
@@ -128,10 +128,31 @@ class options {
 		array_shift($_argv);
 		$options = $_argv;
 
+		if (empty($options)) {
+			$this->printOptionsAndExit();
+		}
+
 		foreach ($options as $option) {
 			$this->parseOption($option);
 		}
 		$this->enforceOptions();
+	}
+
+	/**
+	 * Print out available options and exit.
+	 *
+	 * @access	private
+	 * @return	void
+	 */
+	private function printOptionsAndExit() {
+		echo "Available Options:\n";
+		foreach ($this->validShortOptions as $option => $info) {
+			echo "-\033[1m{$option}\033[0m\n	{$info['comment']}\n	{$info['description']}\n		Example: {$info['example']}\n\n";
+		}
+		foreach ($this->validLongOptions as $option => $info) {
+			echo "--\033[1m{$option}\033[0m\n	{$info['comment']}\n	{$info['description']}\n		Example: {$info['example']}\n\n";
+		}
+		exit;
 	}
 
 	/**
@@ -185,6 +206,11 @@ class options {
 	 */
 	private function enforceOptions() {
 		foreach ($this->validShortOptions as $option => $info) {
+			if ($info['option'] === self::OPTION_REQUIRED && !isset($this->options[$option])) {
+				die("The option `{$option}` is required to be given.\n	{$info['comment']}\n	{$info['description']}\n	Example: {$info['example']}\n");
+			}
+		}
+		foreach ($this->validLongOptions as $option => $info) {
 			if ($info['option'] === self::OPTION_REQUIRED && !isset($this->options[$option])) {
 				die("The option `{$option}` is required to be given.\n	{$info['comment']}\n	{$info['description']}\n	Example: {$info['example']}\n");
 			}
