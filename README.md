@@ -2,7 +2,7 @@
 
 #Introduction
 ####What is PHP 7 Migration Assistant Report(MAR)?
-PHP 7 MAR, or just "php7mar", is a command line utility to generate reports on existing PHP 5 to assist developers in porting their code quickly.  It will run against invididual files or entire project folders.  Reports contain line numbers, issues noted, and suggested fixes along with documentation links.
+PHP 7 MAR, or just "php7mar", is a command line utility to generate reports on existing PHP 5 code to assist developers in porting their code quickly to PHP 7.  It will run against invididual files or entire project folders.  Reports contain line numbers, issues noted, and suggested fixes along with documentation links.
 
 ####Will php7mar automatically fix my code?
 No, php7mar does implement a full lexer to determine code changes and can not determine the intent of the code.  It uses lexer tokenizing, string matching, and regular expressions to find syntax changes that may cause issues when porting code to PHP 7.  As well, it will detect code snippets in comments and report them as it can not distinguish it as commented code.

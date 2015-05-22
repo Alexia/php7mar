@@ -1,0 +1,7 @@
+{
+	"name": "alexia/php7mar",
+	"description": "PHP 7 MAR, or just \"php7mar\", is a command line utility to generate reports on existing PHP 5 code to assist developers in porting their code quickly to PHP 7.",
+	"require": {
+		"php": ">=5.4.0"
+	}
+}
