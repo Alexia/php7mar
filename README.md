@@ -5,7 +5,7 @@
 PHP 7 MAR, or just "php7mar", is a command line utility to generate reports on existing PHP 5 to assist developers in porting their code quickly.  It will run against invididual files or entire project folders.  Reports contain line numbers, issues noted, and suggested fixes along with documentation links.
 
 ####Will php7mar automatically fix my code?
-No, php7mar does implement a lexer and can not determine the intent of the code.  It uses string matching and regular expressions to find syntax changes that may cause issues when porting code to PHP 7.
+No, php7mar does implement a full lexer to determine code changes and can not determine the intent of the code.  It uses lexer tokenizing, string matching, and regular expressions to find syntax changes that may cause issues when porting code to PHP 7.
 
 #Usage
 First, start by downloading or cloning this repository.  It does not need to be placed inside the folder containing the source code.
