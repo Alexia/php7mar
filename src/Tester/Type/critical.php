@@ -8,7 +8,7 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar\tests;
+namespace Alexia\Mar\Tester\Type;
 
 class critical {
 	/**
