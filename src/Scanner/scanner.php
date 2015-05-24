@@ -8,7 +8,7 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar;
+namespace Alexia\Mar\Scanner;
 
 class scanner {
 	/**

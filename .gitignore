@@ -8,3 +8,5 @@
 *.sublime-workspace
 /reports/*.txt
 /reports/*.md
+vendor
+composer.lock

@@ -9,7 +9,7 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar;
+namespace Alexia\Mar\Tester;
 
 class tests {
 	/**
@@ -74,7 +74,7 @@ class tests {
 	 * @return	string	Test Class Name
 	 */
 	public function getTestClassName($testType) {
-		return "mar\\tests\\".$testType;
+		return "Alexia\\Mar\\Tester\\Type\\".$testType;
 	}
 
 	/**
