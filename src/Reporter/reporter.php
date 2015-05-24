@@ -8,7 +8,9 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar;
+namespace Alexia\Mar\Reporter;
+
+use Alexia\Mar\mar;
 
 class reporter {
 	/**
@@ -69,13 +71,13 @@ class reporter {
 		}
 		$this->projectPath = $projectPath;
 
-		$reportFolder = main::getRealPath($reportFolder);
+		$reportFolder = mar::getRealPath($reportFolder);
 		if ($reportFolder !== false) {
 			$this->reportFolder = $reportFolder;
 		} else {
-			$this->reportFolder = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'reports'.DIRECTORY_SEPARATOR;
+			$this->reportFolder = PHP7MAR_DIR.'reports'.DIRECTORY_SEPARATOR;
 		}
-		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($this->projectPath, '.php').".md";
+		$this->fullFilePath = $this->reportFolder.DIRECTORY_SEPARATOR.date('Y-m-d H:i:s ').basename($this->projectPath, '.php').".md";
 
 		$this->file = fopen($this->fullFilePath, 'w+');
 		register_shutdown_function([$this, 'onShutdown']);
