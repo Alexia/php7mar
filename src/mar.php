@@ -8,9 +8,14 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar;
+namespace Alexia\Mar;
 
-class main {
+use Alexia\Mar\Option\options;
+use Alexia\Mar\Reporter\reporter;
+use Alexia\Mar\Scanner\scanner;
+use Alexia\Mar\Tester\tests;
+
+class mar {
 	/**
 	 * Project File or Path
 	 *
@@ -55,7 +60,6 @@ class main {
 	public function __construct() {
 		define('PHP7MAR_DIR', __DIR__);
 		define('PHP7MAR_VERSION', '0.0.1');
-		spl_autoload_register([$this, 'autoloader'], true, false);
 
 		//Setup command line options/switches.
 		$this->options = new options();
@@ -145,23 +149,6 @@ class main {
 	}
 
 	/**
-	 * Autoloader
-	 *
-	 * @access	public
-	 * @param	string	Class name to load automatically.
-	 * @return	void
-	 */
-	static public function autoloader($className) {
-		$className = str_replace('mar\\', '', $className);
-		$file = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $className).'.php';
-		if (is_file($file)) {
-			require_once($file);
-		} else {
-			throw new \Exception(__CLASS__.": Class file for {$className} not found at {$file}.");
-		}
-	}
-
-	/**
 	 * Get a full real path name to a given path.
 	 *
 	 * @access	public
@@ -180,5 +167,5 @@ class main {
 		return false;
 	}
 }
-$mar = new \mar\main();
+
 ?>

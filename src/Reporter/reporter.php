@@ -8,7 +8,9 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar;
+namespace Alexia\Mar\Reporter;
+
+use Alexia\Mar\mar;
 
 class reporter {
 	/**
@@ -69,7 +71,7 @@ class reporter {
 		}
 		$this->projectPath = $projectPath;
 
-		$reportFolder = main::getRealPath($reportFolder);
+		$reportFolder = mar::getRealPath($reportFolder);
 		if ($reportFolder !== false) {
 			$this->reportFolder = $reportFolder;
 		} else {

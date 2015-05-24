@@ -22,23 +22,23 @@ First, start by downloading or cloning this repository.  It does not need to be 
 
 To begin, type on the command line:
 
-	php mar.php
+	php bin/mar.php
 
 This will produce a list of available arguments and switches.
 
 Typical usage would appear as:
 
-	php mar.php -f="/path/to/file/example.php"
+	php bin/mar.php -f="/path/to/file/example.php"
 
 Or:
 
-	php mar.php -f="/path/to/folder/example/"
+	php bin/mar.php -f="/path/to/folder/example/"
 
 This would run against the example file or folder and save the resulting report into a reports folder inside the php7mar folder.  When referencing the file or folder to run against it is recommend to use a fully qualified path.  Relative paths are supported, but will be relative to the location of the php7mar folder.
 
 Give a try, use the included `testcases.php` to generate a report:
 
-	php mar.php -f="testcases.php"
+	php bin/mar.php -f="testcases.php"
 
 ##Available Options:
 **-f**
