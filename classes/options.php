@@ -225,6 +225,9 @@ class options {
 	 * @return	mixed
 	 */
 	public function getOption($option) {
+		if (!array_key_exists($option, $this->options)){
+			return false;
+		}
 		return $this->options[$option];
 	}
 }

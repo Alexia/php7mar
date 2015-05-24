@@ -55,7 +55,7 @@ class main {
 	public function __construct() {
 		define('PHP7MAR_DIR', __DIR__);
 		define('PHP7MAR_VERSION', '0.0.1');
-		spl_autoload_register([self, 'autoloader'], true, false);
+		spl_autoload_register([$this, 'autoloader'], true, false);
 
 		//Setup command line options/switches.
 		$this->options = new options();
@@ -97,8 +97,10 @@ class main {
 	 */
 	private function run() {
 		$issues = [];
+		$totalFiles = 0;
+		$totalLines = 0;
 		$filePath = $this->scanner->getCurrentFilePath();
-		if (!$this->options->getOption('t') || in_array('syntax', $this->options->getOption('t'))) {
+		if (!$this->options->getOption('t') || in_array('syntax', $this->options->getOption('t'), true)) {
 			$checkSyntax = true;
 		} else {
 			$checkSyntax = false;
@@ -155,7 +157,7 @@ class main {
 		if (is_file($file)) {
 			require_once($file);
 		} else {
-			throw new \Exception(__CLASS__.": Class file for {$classname} not found at {$file}.");
+			throw new \Exception(__CLASS__.": Class file for {$className} not found at {$file}.");
 		}
 	}
 
