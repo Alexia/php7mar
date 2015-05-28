@@ -78,13 +78,14 @@ class options {
 				'syntax'
 			]
 		],
-    'x' => [
-      'option'  => self::OPTION_OPTIONAL,
-      'value'   => self::VALUE_REQUIRED,
-      'comment' => 'File extensions to include when scanning directory',
-      'description' => 'A comma separated list of file extensions to consider as PHP files. Defaults to "php"',
-      'example' => '-x="php,inc"'
-    ]
+		'x' => [
+			'option'			=> self::OPTION_OPTIONAL,
+			'value'				=> self::VALUE_REQUIRED,
+			'comment'			=> 'File extensions to include when scanning a directory.',
+			'description'		=> 'A comma separated list of file extensions to consider as PHP files.  Defaults to "php"',
+			'example'			=> '-x="php,inc"',
+			'comma_delimited'	=> true
+		]
 	];
 
 	/**
@@ -191,9 +192,11 @@ class options {
 				if ($validOptions[$option]['value'] === self::VALUE_REQUIRED && !isset($value)) {
 					die("The option `{$option}` requires a value, but none was given.\n");
 				}
-				if (isset($validOptions[$option]['allowed'])) {
+				if (isset($validOptions[$option]['allowed']) || (isset($validOptions[$option]['comma_delimited']) && $validOptions[$option]['comma_delimited'] == true)) {
 					$value = explode(',', $value);
 					$value = array_map('trim', $value);
+				}
+				if (isset($validOptions[$option]['allowed'])) {
 					foreach ($value as $_value) {
 						if (!in_array($_value, $validOptions[$option]['allowed'])) {
 							die("The value `{$_value}` for `{$option}` is not valid.\n");

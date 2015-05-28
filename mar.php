@@ -72,14 +72,14 @@ class main {
 
 		$this->tests = new tests($this->options->getOption('t'));
 
-		if (!empty($this->options->getOption('php'))) {
+		$phpBinary = $this->options->getOption('php');
+		if (!empty($phpBinary)) {
 			$this->tests->setPHPBinaryPath($this->options->getOption('php'));
 		}
 
 		$start = microtime(true);
 
-    $extensions = !empty($this->options->getOption('x')) ? explode(',', $this->options->getOption('x')) : null;
-		$this->scanner = new scanner($this->projectPath, $extensions);
+		$this->scanner = new scanner($this->projectPath, (is_array($this->options->getOption('x')) ? $this->options->getOption('x') : null));
 
 
 		$this->run();

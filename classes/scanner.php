@@ -25,29 +25,30 @@ class scanner {
 	 */
 	private $files = [];
 
-  /**
-   * List of file extension to process.
-   *
-   * @var   array
-   */
-  private $extensions = ['php'];
+	/**
+	 * List of file extension(s) to process.
+	 *
+	 * @var   array
+	 */
+	private $extensions = ['php'];
 
 	/**
 	 * Main Constructor
 	 *
 	 * @access	public
 	 * @param	string	Project file or folder
+	 * @param	array	[Optional] Array of allowed file extensions.
 	 * @return	void
 	 */
-	public function __construct($projectPath, Array $extensions = null) {
+	public function __construct($projectPath, $extensions = null) {
 		if (empty($projectPath)) {
 			throw new \Exception(__METHOD__.": Project path given was empty.");
 		}
 		$this->projectPath = $projectPath;
 
-    if (!is_null($extensions)) {
-      $this->extensions = $extensions;
-    }
+		if (!is_null($extensions)) {
+			$this->setFileExtensions($extensions);
+		}
 
 		$this->recursiveScan($this->projectPath);
 		reset($this->files);
@@ -75,8 +76,8 @@ class scanner {
 			if (is_dir($path)) {
 				$this->recursiveScan($path);
 			} else {
-        $fileExtension = pathinfo($content, PATHINFO_EXTENSION);
-				if (strlen($fileExtension) == 0 || !in_array($fileExtension, $this->extensions)) {
+				$fileExtension = pathinfo($content, PATHINFO_EXTENSION);
+				if (strlen($fileExtension) == 0 || !in_array($fileExtension, $this->getFileExtensions())) {
 					continue;
 				}
 				$this->files[] = $path;
@@ -114,27 +115,28 @@ class scanner {
 		return current($this->files);
 	}
 
-  /**
-   * Sets the file extensions to be considered as PHP file. Ex:
-   *
-   *  array('php', 'inc')
-   *
-   * Do NOT include the dot before the extension
-   *
-   * @access public
-   * @param array $extensions
-   */
-  public function setFileExtensions(Array $extensions) {
-    $this->extensions = $extensions;
-  }
+	/**
+	 * Sets the file extensions to be considered as PHP file. Ex:
+	 *
+	 *  array('php', 'inc')
+	 *
+	 * Do NOT include the dot before the extension
+	 *
+	 * @access	public
+	 * @param 	array	Allowed file extensions
+	 */
+	public function setFileExtensions(array $extensions) {
+		$this->extensions = $extensions;
+	}
 
-  /**
-   * Gets the list of extensions to be considered PHP files when scanning
-   *
-   * @return array File extensions to be considered as PHP files
-   */
-  public function getFileExtensions() {
-    return $this->extensions;
-  }
+	/**
+	 * Gets the list of extensions to be considered PHP files when scanning
+	 *
+	 * @access	public
+	 * @return	array	File extensions to be considered as PHP files.
+	 */
+	public function getFileExtensions() {
+		return (array) $this->extensions;
+	}
 }
 ?>
