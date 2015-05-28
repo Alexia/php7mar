@@ -79,8 +79,9 @@ class main {
 
 		$start = microtime(true);
 
-		$this->scanner = new scanner($this->projectPath, (is_array($this->options->getOption('x')) ? $this->options->getOption('x') : null));
-
+		$fileExtensions = (is_array($this->options->getOption('x')) ? $this->options->getOption('x') : null);
+		$this->scanner = new scanner($this->projectPath, $this->options->getOption('x'));
+		$this->reporter->add("Including file extensions: ".implode(",", $this->scanner->getFileExtensions()), 0, 1);
 
 		$this->run();
 		$end = microtime(true);
