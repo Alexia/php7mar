@@ -77,7 +77,14 @@ class options {
 				'nuance',
 				'syntax'
 			]
-		]
+		],
+    'x' => [
+      'option'  => self::OPTION_OPTIONAL,
+      'value'   => self::VALUE_REQUIRED,
+      'comment' => 'File extensions to include when scanning directory',
+      'description' => 'A comma separated list of file extensions to consider as PHP files. Defaults to "php"',
+      'example' => '-x="php,inc"'
+    ]
 	];
 
 	/**

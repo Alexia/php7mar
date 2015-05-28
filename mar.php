@@ -77,7 +77,10 @@ class main {
 		}
 
 		$start = microtime(true);
-		$this->scanner = new scanner($this->projectPath);
+
+    $extensions = !empty($this->options->getOption('x')) ? explode(',', $this->options->getOption('x')) : null;
+		$this->scanner = new scanner($this->projectPath, $extensions);
+
 
 		$this->run();
 		$end = microtime(true);
