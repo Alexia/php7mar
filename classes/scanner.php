@@ -46,7 +46,7 @@ class scanner {
 		}
 		$this->projectPath = $projectPath;
 
-		if (!is_null($extensions)) {
+		if (is_array($extensions)) {
 			$this->setFileExtensions($extensions);
 		}
 
@@ -98,9 +98,9 @@ class scanner {
 		}
 		$file = $_file['value'];
 
-		$lines = file($file);
+		$lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		if ($lines === false) {
-			return false;
+			$lines = [];
 		}
 		return $lines;
 	}
