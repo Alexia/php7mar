@@ -74,7 +74,7 @@ class tests {
 	 * @return	string	Test Class Name
 	 */
 	public function getTestClassName($testType) {
-		return "mar\\tests\\".$testType;
+		return __NAMESPACE__."\\tests\\".$testType;
 	}
 
 	/**

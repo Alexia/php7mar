@@ -156,12 +156,10 @@ class main {
 	 * @return	void
 	 */
 	static public function autoloader($className) {
-		$className = str_replace('mar\\', '', $className);
+		$className = str_replace('alexia\\mar\\', '', $className);
 		$file = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $className).'.php';
 		if (is_file($file)) {
 			require_once($file);
-		} else {
-			throw new \Exception(__CLASS__.": Class file for {$className} not found at {$file}.");
 		}
 	}
 
@@ -184,5 +182,5 @@ class main {
 		return false;
 	}
 }
-$mar = new \mar\main();
+$mar = new main();
 ?>
