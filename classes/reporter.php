@@ -137,13 +137,13 @@ class reporter {
 	 */
 	public function addSections() {
 		foreach ($this->sectionBuffers as $section => $filePaths) {
-			$this->add('#'.$section, 1, 1);
+			$this->add('# '.$section, 1, 1);
 			foreach ($filePaths as $filePath => $tests) {
-				$this->add('####'.$filePath, 0, 1);
+				$this->add('#### '.$filePath, 0, 1);
 				foreach ($tests as $test => $lines) {
 					$this->add('* '.$test, 0, 1);
 					foreach ($lines as $line) {
-						$this->add(" * Line {$line[0]}: {$line[1]}", 0, 1);
+						$this->add(" * Line {$line[0]}: `" . str_replace('`', '\'', $line[1]) . "`", 0, 1);
 					}
 				}
 				$this->add('', 1, 0);
