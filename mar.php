@@ -110,7 +110,7 @@ class main {
 			$checkSyntax = false;
 		}
 
-		while ($lines = $this->scanner->scanNextFile()) {
+		while (($lines = $this->scanner->scanNextFile()) !== false) {
 			$totalFiles++;
 
 			//Check syntax and assign a line to grab if needed.
