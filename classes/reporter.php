@@ -143,7 +143,7 @@ class reporter {
 				foreach ($tests as $test => $lines) {
 					$this->add('* '.$test, 0, 1);
 					foreach ($lines as $line) {
-						$this->add(" * Line {$line[0]}: `" . str_replace('`', '\'', $line[1]) . "`", 0, 1);
+						$this->add(" * Line {$line[0]}: `".str_replace('`', '\`', $line[1])."`", 0, 1);
 					}
 				}
 				$this->add('', 1, 0);
