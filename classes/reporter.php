@@ -85,16 +85,6 @@ class reporter {
 	}
 
 	/**
-	 * Function Documentation
-	 *
-	 * @access	public
-	 * @return	void
-	 */
-	public function setFormat($format) {
-		# code...
-	}
-
-	/**
 	 * Add a new line to the report.
 	 *
 	 * @access	public
