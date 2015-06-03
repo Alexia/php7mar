@@ -9,7 +9,7 @@
  * @link       https://github.com/Alexia/php7mar
  */
 
-namespace mar;
+namespace alexia\mar;
 
 class tests {
 	/**
