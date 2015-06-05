@@ -138,6 +138,7 @@ class tests {
 		}
 		exec($binary.' -l '.$filePath.' 2>&1', $output);
 
+		$syntax = [];
 		$errorMsgLine = ' in '.$filePath;
 		if (count($output)) {
 			foreach ($output as $string) {
