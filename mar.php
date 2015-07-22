@@ -106,6 +106,10 @@ class main {
 		$filePath = $this->scanner->getCurrentFilePath();
 		if (!$this->options->getOption('t') || in_array('syntax', $this->options->getOption('t'), true)) {
 			$checkSyntax = true;
+			$versionGood = $this->tests->getPHPVersion();
+			if (!$versionGood) {
+				$this->reporter->add("ERROR!  Syntax checking was selected and a PHP binary lower than 7.0.0-dev was specified.", 0, 1);
+			}
 		} else {
 			$checkSyntax = false;
 		}

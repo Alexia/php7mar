@@ -114,6 +114,20 @@ class tests {
 	}
 
 	/**
+	 * Return the PHP binary location.
+	 *
+	 * @access	public
+	 * @return	string	PHP binary location.
+	 */
+	public function getPHPBinaryPath() {
+		$binary = 'php';
+		if ($this->php !== null) {
+			$binary = $this->php;
+		}
+		return $binary;
+	}
+
+	/**
 	 * Set the location of the PHP binary.
 	 *
 	 * @access	public
@@ -125,6 +139,21 @@ class tests {
 	}
 
 	/**
+	 * Return the version of PHP for the selected binary.
+	 *
+	 * @access	public
+	 * @return	mixed	Version string or false on error.
+	 */
+	public function getPHPVersion() {
+		$binary = $this->getPHPBinaryPath();
+		$version = exec($binary.' -r "echo(phpversion());" 2>&1', $version);
+
+		$version = trim($version);
+
+		return version_compare($version, "7.0.0-dev", ">=");
+	}
+
+	/**
 	 * Check if syntax is valid and return line information if not.
 	 *
 	 * @access	public
@@ -132,10 +161,7 @@ class tests {
 	 * @return	array	Test Results
 	 */
 	public function checkSyntax($filePath) {
-		$binary = 'php';
-		if ($this->php !== null) {
-			$binary = $this->php;
-		}
+		$binary = $this->getPHPBinaryPath();
 		exec($binary.' -l '.$filePath.' 2>&1', $output);
 
 		$syntax = [];
