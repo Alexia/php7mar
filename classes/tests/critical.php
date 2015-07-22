@@ -48,7 +48,7 @@ class critical {
 	 * @return	boolean	Line matches test.
 	 */
 	public function _variableInterpolation($line) {
-		$regex = "#(?:(?:->|\\$)\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+|::\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]+\[.+?\]\(.*?\))#i";
+		$regex = "#(((::|->)\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*)+\\[[^\s]+\\]\()|(->\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*\\[)|(\\$\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*\\[)|(^\s*?global.*?\\$\\$[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*)#i"; //@LawnGnome's regex from Twitter; modified and extended to support global simple variable change.
 		if (preg_match($regex, $line)) {
 			return true;
 		}
