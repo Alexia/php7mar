@@ -1,9 +1,9 @@
 <?php
-$$foo['bar']['baz'];	// interpreted as ($$foo)['bar']['baz']
-$foo->$bar['baz'];		// interpreted as ($foo->$bar)['baz']
-$foo->$bar['baz']();	// interpreted as ($foo->$bar)['baz']()
-Foo::$bar['baz']();		// interpreted as (Foo::$bar)['baz']()
-global $$foo->bar;
+$$foo['bar']['baz'];	//Interpreted as ($$foo)['bar']['baz']
+$foo->$bar['baz'];		//Interpreted as ($foo->$bar)['baz']
+$foo->$bar['baz']();	//Interpreted as ($foo->$bar)['baz']()
+Foo::$bar['baz']();		//Interpreted as (Foo::$bar)['baz']()
+global $$foo->bar;		//The global keyword now only accepts simple variables.
 $array["a"] =& $array["b"]; //Array value created by reference.
 list() = "string";
 list() = $a;

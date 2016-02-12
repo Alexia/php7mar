@@ -75,7 +75,7 @@ class reporter {
 		} else {
 			$this->reportFolder = PHP7MAR_DIR.DIRECTORY_SEPARATOR.'reports'.DIRECTORY_SEPARATOR;
 		}
-		$this->fullFilePath = $this->reportFolder.date('Y-m-d H:i:s ').basename($this->projectPath, '.php').".md";
+		$this->fullFilePath = $this->reportFolder.date('Y-m-d H.i.s ').basename($this->projectPath, '.php').".md";
 
 		$this->file = fopen($this->fullFilePath, 'w+');
 		register_shutdown_function([$this, 'onShutdown']);
