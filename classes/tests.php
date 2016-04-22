@@ -162,7 +162,7 @@ class tests {
 	 */
 	public function checkSyntax($filePath) {
 		$binary = $this->getPHPBinaryPath();
-		exec($binary.' -l '.$filePath.' 2>&1', $output);
+		exec($binary.' -l '.escapeshellarg($filePath).' 2>&1', $output);
 
 		$syntax = [];
 		$errorMsgLine = ' in '.$filePath;
