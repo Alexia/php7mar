@@ -122,4 +122,8 @@ mysql_stat();
 mysql_tablename();
 mysql_thread_id();
 mysql_unbuffered_query();
-?>
+
+// New objects cannot be assigned by reference
+class C {}
+$c =& new C;
+$c =&new C;
