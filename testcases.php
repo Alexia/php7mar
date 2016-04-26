@@ -127,3 +127,14 @@ mysql_unbuffered_query();
 class C {}
 $c =& new C;
 $c =&new C;
+
+// Methods with the same name as their class will not be constructors in a future version of PHP
+class FooBar {
+	var $test = 42;
+
+	function set() {}
+
+	function FooBar() {
+		// NOP
+	}
+}
