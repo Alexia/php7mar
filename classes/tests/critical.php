@@ -29,6 +29,7 @@ class critical {
 		'reservedNames',
 		'deprecatedFunctions',
 		'newOperatorWithReference',
+		'oldClassConstructors',
 	];
 
 	/**
@@ -131,6 +132,31 @@ class critical {
 		if (preg_match($regex, $line)) {
 			return true;
 		}
+		return false;
+	}
+
+	public function _oldClassConstructors($line) {
+		static $lastClassName = false;
+
+		// reset the name of the class that we've seen
+		if ($line === '<?php') {
+			$lastClassName = false;
+		}
+
+		// find the start of PHP class declaration
+		if (strpos($line, 'class') === 0) {
+			if (preg_match('#class (\w+)#', $line, $matches)) {
+				$lastClassName = $matches[1];
+			}
+		}
+
+		// is the class name used as the function name?
+		if ($lastClassName !== false && strpos($line, 'function') !== false) {
+			if (preg_match("#function {$lastClassName}\s?\(#", $line)) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 }
