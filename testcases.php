@@ -138,3 +138,18 @@ class FooBar {
 		// NOP
 	}
 }
+
+class FooBar
+{
+	var $test = 42;
+
+	function set()
+	{
+		
+	}
+
+	function FooBar() 
+	{
+		// NOP
+	}
+}
