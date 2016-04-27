@@ -60,6 +60,13 @@ Give a try, use the included `testcases.php` to generate a report:
 		*Example: -t="syntax,nuance"*
 ```
 
+**-x**
+```
+	List of file extension(s) to process.
+	By default *.php files are processed.
+		*Example: -x="php,inc"*
+```
+
 **--php**
 ```
 	File path to the PHP binary to use for syntax checking.
