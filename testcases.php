@@ -153,3 +153,8 @@ class FooBar
 		// NOP
 	}
 }
+
+abstract class TheThing {
+	public function TheThing() {
+	}
+}
