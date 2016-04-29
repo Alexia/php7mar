@@ -144,10 +144,8 @@ class critical {
 		}
 
 		// find the start of PHP class declaration
-		if (strpos($line, 'class') === 0) {
-			if (preg_match('#class (\w+)#', $line, $matches)) {
-				$lastClassName = $matches[1];
-			}
+		if (preg_match('#^\s?(abstract\s+)?class (\w+)#', $line, $matches)) {
+			$lastClassName = $matches[2];
 		}
 
 		// is the class name used as the function name?
