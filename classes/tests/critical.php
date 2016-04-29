@@ -144,7 +144,7 @@ class critical {
 		}
 
 		// find the start of PHP class declaration
-		if (preg_match('#^(abstract\s+)?class (\w+)#', $line, $matches)) {
+		if (preg_match('#^\s?(abstract\s+)?class (\w+)#', $line, $matches)) {
 			$lastClassName = $matches[2];
 		}
 

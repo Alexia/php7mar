@@ -154,7 +154,7 @@ class FooBar
 	}
 }
 
-abstract class TheThing {
-	public function TheThing() {
+	abstract class TheThing {
+		public function TheThing() {
+		}
 	}
-}
