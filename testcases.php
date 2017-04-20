@@ -75,6 +75,7 @@ set_magic_quotes_runtime();
 magic_quotes_runtime();
 set_socket_blocking();
 mysql_affected_rows();
+not_mysql_affected_rows();
 mysql_client_encoding();
 mysql_close();
 mysql_connect();
