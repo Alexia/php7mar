@@ -67,6 +67,13 @@ Give a try, use the included `testcases.php` to generate a report:
 		*Example: -x="php,inc"*
 ```
 
+**-p**
+```
+	Print progress output.
+	Print a message to stderr as each file is being analyzed.
+		*Example: -p*
+```
+
 **--php**
 ```
 	File path to the PHP binary to use for syntax checking.

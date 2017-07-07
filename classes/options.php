@@ -85,7 +85,14 @@ class options {
 			'description'		=> 'A comma separated list of file extensions to consider as PHP files.  Defaults to "php"',
 			'example'			=> '-x="php,inc"',
 			'comma_delimited'	=> true
-		]
+		],
+		'p'	=> [
+			'option'		=> self::OPTION_OPTIONAL,
+			'value' 		=> self::VALUE_NONE,
+			'comment'		=> 'Print progress output.',
+			'description'	=> 'Print a message to stderr as each file is being analyzed.',
+			'example'		=> '-p',
+		],
 	];
 
 	/**
