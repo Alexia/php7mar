@@ -113,8 +113,12 @@ class main {
 		} else {
 			$checkSyntax = false;
 		}
+		$print_progress = $this->options->getOption('p');
 
 		while (($lines = $this->scanner->scanNextFile()) !== false) {
+			if ($print_progress) {
+				fprintf(STDERR, "Scanning '%s'\n", $filePath);
+			}
 			$totalFiles++;
 
 			//Check syntax and assign a line to grab if needed.
