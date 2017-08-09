@@ -46,16 +46,18 @@ class options {
 	 */
 	const VALUE_REQUIRED = 2;
 
+	
 	/**
+	 * Long(Two dashes, multiple letter) Options and
 	 * Short(One dash, single letter) Options
 	 *
 	 * @var		array
 	 */
-	private $validShortOptions = [
+	private $validOptions = [
 		'f'	=> [
 			'option'		=> self::OPTION_REQUIRED,
 			'value' 		=> self::VALUE_REQUIRED,
-			'comment'		=> 'Path to the file or folder to run against.',
+			'comment'		=> '(Required) Path to the file or folder to run against.',
 			'description'	=> 'The location of the file or folder to use for generating the report.  A fully qualified path is recommended.  Relative paths will be based off the php7mar folder.',
 			'example'		=> '-f="/path/to/folder"'
 		],
@@ -70,8 +72,10 @@ class options {
 			'option'		=> self::OPTION_OPTIONAL,
 			'value' 		=> self::VALUE_REQUIRED,
 			'comment'		=> 'Types of tests to run.',
-			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.  Allowable values: critical, nuance, and syntax.',
+			'description'	=> 'By default all tests will run.  This option allows tests to be selected using a comma delimited list.',
 			'example'		=> '-t="syntax,nuance"',
+			'lowercase' => true,
+			'comma_delimited'	=> true,
 			'allowed'		=> [
 				'critical',
 				'nuance',
@@ -82,18 +86,10 @@ class options {
 			'option'			=> self::OPTION_OPTIONAL,
 			'value'				=> self::VALUE_REQUIRED,
 			'comment'			=> 'File extensions to include when scanning a directory.',
-			'description'		=> 'A comma separated list of file extensions to consider as PHP files.  Defaults to "php"',
+			'description'	=> 'A comma separated list of file extensions to consider as PHP files.  Defaults to "php"',
 			'example'			=> '-x="php,inc"',
 			'comma_delimited'	=> true
-		]
-	];
-
-	/**
-	 * Long(Two dashes, multiple letter) Options
-	 *
-	 * @var		array
-	 */
-	private $validLongOptions = [
+		],
 		'php'	=> [
 			'option'		=> self::OPTION_OPTIONAL,
 			'value' 		=> self::VALUE_REQUIRED,
@@ -128,22 +124,29 @@ class options {
 	 * @access	public
 	 * @return	void
 	 */
-	public function __construct() {
-		global $argv;
-
-		//Temporary variable so we do not override the global.
-		$_argv = $argv;
-		array_shift($_argv);
-		$options = $_argv;
-
-		if (empty($options)) {
+	public function __construct() {		
+		$short = '';
+		$long = [];
+		foreach( $this->validOptions as $o => $opt ){
+			if( strlen( $o ) == 1  ){
+				$short .= $o .($opt['value'] == self::VALUE_REQUIRED ?':':'').($opt['value'] == self::VALUE_OPTIONAL ?'::':'' );
+			}else{
+				$long[] = $o .($opt['value'] == self::VALUE_REQUIRED ?':':'').($opt['value'] == self::VALUE_OPTIONAL ?'::':'' );
+			}
+		}
+		$this->options = getopt( $short, $long );
+		if( !$this->options ){
 			$this->printOptionsAndExit();
 		}
-
-		foreach ($options as $option) {
-			$this->parseOption($option);
+		
+		try{
+			$this->enforceOptions();
+		}catch( \Exception $e ){
+			echo "\n-------------------------------------------\n";
+			echo $e->getMessage();
+			echo "\n-------------------------------------------\n";
+			$this->printOptionsAndExit(false);
 		}
-		$this->enforceOptions();
 	}
 
 	/**
@@ -152,60 +155,34 @@ class options {
 	 * @access	private
 	 * @return	void
 	 */
-	private function printOptionsAndExit() {
+	private function printOptionsAndExit( $verbose = true ) {
 		echo "Available Options:\n";
-		foreach ($this->validShortOptions as $option => $info) {
-			echo "-\033[1m{$option}\033[0m\n	{$info['comment']}\n	{$info['description']}\n		Example: {$info['example']}\n\n";
-		}
-		foreach ($this->validLongOptions as $option => $info) {
-			echo "--\033[1m{$option}\033[0m\n	{$info['comment']}\n	{$info['description']}\n		Example: {$info['example']}\n\n";
+		foreach ($this->validOptions as $option => $info) {
+			$prefix = strlen( $option ) > 1 ? '--':'-';
+		
+			if( $verbose ){
+				$format = "%s\t%s\n\t%s\n\tExample: %s\n";
+				printf( $format, $prefix.$option, $info['comment'], $info['description'], $info['example'] );
+				if( isset( $info['allowed'] )){
+					echo "\tAvailable options: ".implode(', ', $info['allowed'] )."\n";
+				}
+			}else{
+				$format = "%s\t%-50s\tExample: %s";
+				printf( $format, $prefix.$option, $info['comment'], $info['example'] );
+				if( isset( $info['allowed'] )){
+					echo "\n\tAvailable options: ".implode(', ', $info['allowed'] );
+				}
+			}
+			echo "\n";
+			/*
+			if( strlen( $option ) == 1  ){
+				echo "-\033[1m{$option}\033[0m  {$info['comment']}\n  {}\n  Example: {$info['example']}\n";
+			}else{
+				echo "--\033[1m{$option}\033[0m  {$info['comment']}\n  {$info['description']}\n  Example: {$info['example']}\n";
+			}
+			*/
 		}
 		exit;
-	}
-
-	/**
-	 * Parse a raw option
-	 *
-	 * @access	private
-	 * @param	string	Raw option from the command line.
-	 * @return	array	Option name, value if provided.
-	 */
-	private function parseOption($rawOption) {
-		$regex = "#^(?P<option>-[a-zA-Z]{1}|--[a-zA-Z-]{2,})(?:=(?P<value>['|\"]?.+?['|\"]?))?$#";
-		if (preg_match($regex, trim($rawOption), $matches)) {
-			if (isset($matches['option'])) {
-				$option = ltrim($matches['option'], '-');
-				if (isset($matches['value'])) {
-					$value = $matches['value'];
-				}
-
-				if (strlen($option) == 1) {
-					//Short Option
-					$validOptions = $this->validShortOptions;
-				} elseif (strlen($option) >= 2) {
-					//Long Option
-					$validOptions = $this->validLongOptions;
-				}
-				if (!isset($validOptions[$option])) {
-					die("The option `{$option}` does not exist.\n");
-				}
-				if ($validOptions[$option]['value'] === self::VALUE_REQUIRED && !isset($value)) {
-					die("The option `{$option}` requires a value, but none was given.\n");
-				}
-				if (isset($validOptions[$option]['allowed']) || (isset($validOptions[$option]['comma_delimited']) && $validOptions[$option]['comma_delimited'] == true)) {
-					$value = explode(',', $value);
-					$value = array_map('trim', $value);
-				}
-				if (isset($validOptions[$option]['allowed'])) {
-					foreach ($value as $_value) {
-						if (!in_array($_value, $validOptions[$option]['allowed'])) {
-							die("The value `{$_value}` for `{$option}` is not valid.\n");
-						}
-					}
-				}
-				$this->options[$option] = (isset($value) ? $value : true);
-			}
-		}
 	}
 
 	/**
@@ -215,14 +192,22 @@ class options {
 	 * @return	void
 	 */
 	private function enforceOptions() {
-		foreach ($this->validShortOptions as $option => $info) {
-			if ($info['option'] === self::OPTION_REQUIRED && !isset($this->options[$option])) {
-				die("The option `{$option}` is required to be given.\n	{$info['comment']}\n	{$info['description']}\n	Example: {$info['example']}\n");
-			}
-		}
-		foreach ($this->validLongOptions as $option => $info) {
-			if ($info['option'] === self::OPTION_REQUIRED && !isset($this->options[$option])) {
-				die("The option `{$option}` is required to be given.\n	{$info['comment']}\n	{$info['description']}\n	Example: {$info['example']}\n");
+		foreach( $this->validOptions as $option => $info ){
+			if( isset($this->options[$option])){
+				if( isset($info['lowercase']) && $info['lowercase'] ){
+					$this->options[$option] = strtolower($this->options[$option]);
+				}
+				if( isset($info['comma_delimited']) && $info['comma_delimited'] ){
+					$this->options[$option] = explode(',',$this->options[$option]);
+				}
+				if( isset($info['allowed']) ){
+					$invalid = array_diff( $this->options[$option], $info['allowed'] );
+					if( $invalid ){
+						throw new \Exception("Invalid inputs for '{$option}': ".implode(',',$invalid));
+					}
+				}
+			}elseif ($info['option'] === self::OPTION_REQUIRED ){
+				throw new \Exception("The option `{$option}` is required.\n{$info['comment']}\n {$info['description']}\nExample: {$info['example']}\n");
 			}
 		}
 	}

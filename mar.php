@@ -100,10 +100,6 @@ class main {
 	 * @return	void
 	 */
 	private function run() {
-		$issues = [];
-		$totalFiles = 0;
-		$totalLines = 0;
-		$filePath = $this->scanner->getCurrentFilePath();
 		if (!$this->options->getOption('t') || in_array('syntax', $this->options->getOption('t'), true)) {
 			$checkSyntax = true;
 			$versionGood = $this->tests->getPHPVersion();
@@ -113,10 +109,16 @@ class main {
 		} else {
 			$checkSyntax = false;
 		}
-
-		while (($lines = $this->scanner->scanNextFile()) !== false) {
+		$issues = [];
+		$totalFiles = 0;
+		$totalLines = 0;
+		while (($handle = $this->scanner->scanNextFile()) !== false) {
+			$filePath = $this->scanner->getCurrentFilePath();
+			if( !is_resource($handle) ){
+				continue;
+			}
 			$totalFiles++;
-
+			
 			//Check syntax and assign a line to grab if needed.
 			$grabLineNumber = null;
 			$grabLine = null;
@@ -127,9 +129,13 @@ class main {
 				}
 			}
 
-			foreach ($lines as $index => $line) {
-				$lineNumber = $index + 1;
-				$line = trim($line, "\r\n");
+			$index = 0;
+			while(false != ($line = fgets( $handle, 1024 ))) {
+				$lineNumber = ++$index;
+				$line = trim($line, "\r\n\t ");
+				if( $line == '' ){
+					continue;
+				}
 
 				if ($lineNumber == $grabLineNumber) {
 					$grabLine = $line;
@@ -187,4 +193,5 @@ class main {
 	}
 }
 $mar = new main();
+
 ?>

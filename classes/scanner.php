@@ -31,7 +31,12 @@ class scanner {
 	 * @var   array
 	 */
 	private $extensions = ['php'];
-
+	
+	/*
+	 * Current file being examined
+	*/
+	private $currentFile = null;
+	
 	/**
 	 * Main Constructor
 	 *
@@ -49,39 +54,15 @@ class scanner {
 		if (is_array($extensions)) {
 			$this->setFileExtensions($extensions);
 		}
-
-		$this->recursiveScan($this->projectPath);
-		reset($this->files);
-	}
-
-	/**
-	 * Perform a recursive scan of the given path to return files only.
-	 *
-	 * @access	private
-	 * @param	string	Starting Folder
-	 * @return	void
-	 */
-	private function recursiveScan($startFolder) {
-		if (is_file($startFolder)) {
-			$this->files[] = $startFolder;
-			return;
-		}
-		$contents = scandir($startFolder);
-		foreach ($contents as $content) {
-			if (strpos($content, '.') === 0) {
-				continue;
-			}
-
-			$path = $startFolder.DIRECTORY_SEPARATOR.$content;
-			if (is_dir($path)) {
-				$this->recursiveScan($path);
-			} else {
-				$fileExtension = pathinfo($content, PATHINFO_EXTENSION);
-				if (strlen($fileExtension) == 0 || !in_array($fileExtension, $this->getFileExtensions())) {
-					continue;
-				}
-				$this->files[] = $path;
-			}
+		
+		if( is_file( $projectPath ) ){
+			$this->files = [ $projectPath ];
+		}else{
+			$Directory 	 = new \RecursiveDirectoryIterator($projectPath.'/');			
+			$Iterator 	 = new \RecursiveIteratorIterator($Directory, \RecursiveIteratorIterator::SELF_FIRST);
+			$this->files = new \RegexIterator($Iterator, '/^.+\.('.implode('|',$this->extensions).')$/i');
+			$this->files->next();
+			//$this->files = iterator_to_array( $Files );
 		}
 	}
 
@@ -92,17 +73,30 @@ class scanner {
 	 * @return	mixed	Array of lines from the file or false for no more files.
 	 */
 	public function scanNextFile() {
-		$_file = each($this->files);
-		if ($_file === false) {
+		if(is_a( $this->files, 'RegexIterator' )){
+			$_file = $this->files->current();
+			$this->files->next();
+		}else{
+			list( $file, $_file ) = each($this->files);	
+		}
+		if( is_a( $_file, 'SplFileInfo' )){
+			$file = $_file->getRealPath();
+		}else{
+			$file = $_file;
+		}
+		
+		if(!$file) {
 			return false;
 		}
-		$file = $_file['value'];
-
-		$lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		if ($lines === false) {
-			$lines = [];
+		
+		$this->currentFile = $file;
+		
+		$fp = fopen( $file, 'r' );
+		if( $fp ){
+			return $fp;
+		}else{
+			return true;
 		}
-		return $lines;
 	}
 
 	/**
@@ -112,7 +106,7 @@ class scanner {
 	 * @return	string	File Path
 	 */
 	public function getCurrentFilePath() {
-		return current($this->files);
+		return $this->currentFile;
 	}
 
 	/**
