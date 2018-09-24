@@ -79,7 +79,7 @@ Give a try, use the included `testcases.php` to generate a report:
 Critical tests look for issues that will cause broken code, compilation errors, or otherwise create code that works in unintended manors.
 
 ## Nuance
-Nuance tests look for issues that might cause silent underisable code behavior.  These tests can report many false positives as they can not determine the intent of the code being checked.
+Nuance tests look for issues that might cause silent undesirable code behavior.  These tests can report many false positives as they can not determine the intent of the code being checked.
 
 ## Syntax
 A basic command line based syntax checker that checks all files for standard syntax issues.  This is useful for double checking work after making many mass find and replace operations.  Please note that syntax checking adds a significant increase to processing time especially for large code bases.  To run without syntax checking use the -t option and omit syntax; -t="critical,nuance"
