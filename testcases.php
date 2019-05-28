@@ -122,6 +122,7 @@ mysql_stat();
 mysql_tablename();
 mysql_thread_id();
 mysql_unbuffered_query();
+split();
 
 // New objects cannot be assigned by reference
 class C {}
